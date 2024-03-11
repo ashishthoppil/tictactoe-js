@@ -10,10 +10,27 @@ let currentPlayer = "X";
     "246",
   ];
 
-  const xArray = [];
-  const oArray = [];
+  let xArray = [];
+  let oArray = [];
 
   let gameOver = false;
+
+  const clearCells = () => {
+    const cells = document.getElementsByClassName('cell');
+
+    for(let i = 0; i < cells.length; i++) {
+      cells[i].innerHTML = '';
+    }
+  }
+
+  const reset = () => {
+    xArray = [];
+    oArray = [];
+    gameOver = false;
+    currentStatus.innerHTML = `Current Player: ${currentPlayer}`;
+    currentStatus.style.color = "black";
+    clearCells();
+  }
 
   const checkWinner = (array) => {
     const formattedData = array.sort().toString().replace(/,/g, "");
@@ -23,6 +40,18 @@ let currentPlayer = "X";
         flag = true;
         currentStatus.innerHTML = `Game Over! ${currentPlayer} wins!`;
         currentStatus.style.color = "red";
+
+        const restartBtn = document.createElement('button');
+        restartBtn.style.padding = '10px 20px';
+        restartBtn.style.marginBottom = '10px';
+
+        restartBtn.innerHTML = 'Restart';
+
+        restartBtn.onclick = () => {
+          reset();
+          restartBtn.remove();
+        }
+        currentStatus.after(restartBtn);
       }
     });
     gameOver = flag;
